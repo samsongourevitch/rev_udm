@@ -32,6 +32,6 @@ sweep:
 
 entries:
   - sampler: udlm
-    checkpoint_path: /mnt/vast01/users/yazid.janati/projects/duo/outputs/openwebtext-train/2026.03.25/192757/checkpoints/last.ckpt
+    checkpoint_path: /path/to/checkpoints/last.ckpt
     model_prediction: mean_loo
     train_loss: elbo

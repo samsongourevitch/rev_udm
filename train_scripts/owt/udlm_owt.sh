@@ -16,7 +16,7 @@ GLOBAL_BATCH_SIZE=512
 
 source $HOME/venvs/revisited_udm/bin/activate
 
-RUN=/mnt/vast01/users/yazid.janati/projects/duo/outputs/openwebtext-train/2026.03.25/182558/
+RUN=/path/to/output/run_dir/
 WANDB_RUN=udlm-owt-20260325_182550
 WANDB_ID=udlm-owt-20260325_182550_1
 
