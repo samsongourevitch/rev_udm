@@ -1,0 +1,11 @@
+name: reaudm
+backbone: dit  # dit / dimamba / hf_dit
+model_prediction: mean
+time_conditioning: True
+condition_on_uniform_noise: True
+noise_conditioning: True
+conditioning_fusion: separate_linear  # separate_linear / shared_mlp
+subs_masking: False
+causal_attention: False
+ignore_bos: False
+loss_type: elbo

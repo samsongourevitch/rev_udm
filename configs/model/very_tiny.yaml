@@ -1,0 +1,8 @@
+  name: very_tiny
+  type: ddit
+  hidden_size: 256
+  cond_dim: 128
+  length: ${data.cutoff_len}
+  n_blocks: 6
+  n_heads: 4
+  dropout: 0.1

@@ -1,0 +1,8 @@
+corrector_name: pc_gibbs
+ancestral_step: correctors.gibbs_corrector.predictor_corrector_gibbs
+k_parallel: 12
+selection: lowest_log_margin # lowest_maxprob / lowest_current_prob / lowest_log_margin / random
+selection_tau: 1.0
+skip_final_corrector: true 
+pc_temperature: 1.0 
+corrector_steps: 2

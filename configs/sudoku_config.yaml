@@ -1,0 +1,103 @@
+defaults:
+  - /callbacks: [checkpoint_every_n_steps, checkpoint_monitor, learning_rate_monitor]
+  - /strategy: ddp
+  - /lr_scheduler: constant_warmup
+  - /algo: udlm
+  - /model: very_tiny
+  - _self_
+
+mode: train
+
+seed: 1
+
+lr_scheduler:
+  _target_: transformers.get_constant_schedule_with_warmup
+  num_warmup_steps: 0
+
+callbacks:
+  checkpoint_monitor:
+    save_on_train_epoch_end: false
+
+data:
+  name: sudoku
+  tokenizer_config_path: configs/data/sudoku_tokenizer_config.json
+  train_csv: data/sudoku_train.csv
+  valid_csv: data/sudoku_test.csv
+  cutoff_len: 164
+  max_train_samples: null
+  max_valid_samples: null
+
+loader:
+  global_batch_size: 512
+  eval_global_batch_size: ${.global_batch_size}
+  batch_size: ${div_up:${.global_batch_size}, ${eval:${trainer.devices} * ${trainer.num_nodes}}}
+  eval_batch_size: ${div_up:${.eval_global_batch_size}, ${eval:${trainer.devices} * ${trainer.num_nodes}}}
+  num_workers: 4
+  train_num_workers: ${.num_workers}
+  eval_num_workers: 0
+  pin_memory: true
+
+sampling:
+  nfes: 16
+  apply_temp_output: true
+  p_nucleus: 1.0
+
+training:
+  ema: 0.0
+  antithetic_sampling: true
+  sampling_eps: 1e-3
+  loss_fn: elbo
+
+eval:
+  checkpoint_path: ''
+  generate_samples: true
+  generate_greedy: false
+  generate_random: true
+  log_samples: true
+  log_train_samples: false
+  num_sample_log: 1
+  train_sample_log_interval: 200
+
+optim:
+  weight_decay: 0
+  lr: 1e-3
+  beta1: 0.9
+  beta2: 0.999
+  eps: 1e-8
+
+trainer:
+  _target_: lightning.Trainer
+  accelerator: cuda
+  num_nodes: 1
+  devices: ${visible_device_count:}
+  accumulate_grad_batches: ${div_up:${loader.global_batch_size}, ${eval:${trainer.devices} * ${loader.batch_size} * ${trainer.num_nodes}}}
+  gradient_clip_val: 1.0
+  precision: bf16
+  num_sanity_val_steps: 0
+  max_steps: 20000
+  log_every_n_steps: 100
+  limit_train_batches: 1.0
+  limit_val_batches: 1.0
+  val_check_interval: 100
+
+wandb:
+  project: sudoku
+  group: sudoku-dit-${algo.name}
+  job_type: train
+  name: sudoku-dit-${algo.name}-${now:%Y%m%d_%H%M%S}
+  tags:
+    - sudoku
+    - dit
+    - ${algo.name}
+    - elbo
+
+hydra:
+  run:
+    dir: ./outputs/sudoku/${now:%Y.%m.%d}/${now:%H%M%S}
+  job:
+    chdir: true
+
+checkpointing:
+  save_dir: ${cwd:}
+  resume_from_ckpt: false
+  resume_ckpt_path: ${.save_dir}/checkpoints/last.ckpt

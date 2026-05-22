@@ -1,0 +1,4 @@
+corrector_name: confidence
+ancestral_step: correctors.confidence_sampler.confidence_based_step
+inference_steps: ${sampling.nfes}
+k_per_step: 0  # <=0 means automatic schedule based on sequence length and steps

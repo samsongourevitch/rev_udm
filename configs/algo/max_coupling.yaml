@@ -1,0 +1,8 @@
+name: max_coupling
+backbone: dit  # dit / dimamba / hf_dit
+model_prediction: mean # mean / mean_loo
+time_conditioning: True
+subs_masking: False
+causal_attention: False
+ignore_bos: False
+loss_type: elbo

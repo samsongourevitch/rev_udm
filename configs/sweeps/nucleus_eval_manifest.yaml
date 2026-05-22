@@ -1,0 +1,32 @@
+run:
+  name: nucleus_eval_manifest_${now:%Y%m%d_%H%M%S}
+  output_root: ./samples/nucleus_sweep
+
+manifest:
+  path: ./configs/sweeps/nucleus_eval_manifest.jsonl
+
+launcher:
+  manifest_idx: -1
+
+resources:
+  gpus_per_node: 8
+
+sweep:
+  nfe_list: [8, 16, 32, 64, 128, 256, 512, 1024]
+  p_nucleus_list: [0.80, 0.85, 0.90, 0.92, 0.94, 0.96, 0.98, 1.00]
+  temperature: 1.0
+  seeds: [1]
+  eval_batch_size: 16
+  num_sample_batches: 60
+  apply_temp_output: true
+  compute_mauve: false
+  disable_wandb: true
+
+
+# List of the checkpoints to evaluate.
+
+entries:
+  - sampler: udlm
+    checkpoint_path: /mnt/vast01/users/yazid.janati/projects/duo/outputs/openwebtext-train/2026.04.01/150926/checkpoints/last.ckpt
+    model_prediction: mean_loo
+    train_loss: elbo

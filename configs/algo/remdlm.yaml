@@ -1,0 +1,19 @@
+name: remdlm
+backbone: dit  # dit / dimamba / hf_dit
+parameterization: subs
+time_conditioning: False
+subs_masking: False
+causal_attention: False
+ignore_bos: False
+loss_type: elbo
+sigma_config:
+  schedule_type: cap  # zero / constant / cap / rescale / loop
+  constant: 0.0
+  eta_cap: 0.04
+  eta_rescale: 1.0
+  t_switch: null
+  t_on: null
+  t_off: null
+  alpha_on: null
+  loop_eta: null
+  eps: 1e-3

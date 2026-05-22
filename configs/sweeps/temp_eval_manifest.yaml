@@ -1,0 +1,33 @@
+run:
+  name: temp_eval_manifest_${now:%Y%m%d_%H%M%S}
+  output_root: ./samples/temp_sweep
+
+manifest:
+  path: ./configs/sweeps/temp_eval_manifest.jsonl
+
+launcher:
+  manifest_idx: -1
+
+resources:
+  gpus_per_node: 3
+
+sweep:
+  # nfe_list: [8, 16, 32, 64, 128, 256, 512, 1024]
+  # temperatures: [0.80, 0.82, 0.84, 0.86, 0.88, 0.90, 0.92, 0.94, 0.96, 0.98, 1.00, 1.02, 1.04, 1.06, 1.08, 1.10]
+  nfe_list: [16, 32]
+  temperatures: [0.80, 1.00]
+  seeds: [1]
+  eval_batch_size: 2
+  num_sample_batches: 2
+  apply_temp_output: true
+  compute_mauve: false
+  disable_wandb: true
+
+# List of the checkpoints to evaluate.
+
+entries:
+  - sampler: udlm
+    # checkpoint_path: /mnt/vast01/users/yazid.janati/projects/duo/outputs/openwebtext-train/2026.04.01/150926/checkpoints/last.ckpt
+    checkpoint_path: /data/tii/checkpoints-owt/sampler=udlm__prediction=mean_loo__train_loss=elbo/checkpoints/last.ckpt
+    model_prediction: mean_loo
+    train_loss: elbo

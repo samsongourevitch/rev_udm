@@ -1,0 +1,53 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Notebook cache
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+
+# Hydra / training / experiment outputs
+outputs/
+results/
+checkpoints/
+
+# Generated images and reconstructions
+debug_plots/
+reconstructions/
+
+# Local model weights and caches
+pretrained_models/
+
+# OS/editor noise
+.DS_Store
+flash-attention/*
+.cache/
+wandb
+samples/*
+data/
+.cache/
+uv.lock
+**egg-info**
+.vscode/
+.codex
+.agents
+integral/*
+lightning/*
+lightning_logs/
+**.log
+samples/* 
+plots
+**.nfs
+**.png
+**.jsonl
+**.csv
+render_sensitivity_plot.py
+paper.mlpstyle
+samples.json
+!configs/data
+lm1b_checkpoints/
+owt_checkpoints/
+utils/migrate_linudlm_checkpoint.py

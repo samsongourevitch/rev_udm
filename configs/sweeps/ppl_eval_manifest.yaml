@@ -1,0 +1,37 @@
+run:
+  name: ppl_eval_manifest_${now:%Y%m%d_%H%M%S}
+  output_root: ./samples/ppl_eval
+
+manifest:
+  path: ./configs/sweeps/ppl_eval_manifest.jsonl
+
+launcher:
+  manifest_idx: -1
+
+resources:
+  gpus_per_node: 8
+
+sweep:
+  seeds: [1]
+  data: openwebtext-split
+  datasets:
+    - openwebtext-split
+    - ag_news
+    - scientific_papers_pubmed
+    - lambada
+    - wikitext2
+    - wikitext103
+    - ptb
+    - lm1b-gpt2
+  model_length: 1024
+  eval_batch_size: 16
+  disable_ema: false
+  disable_wandb: true
+
+# List of the checkpoints to evaluate.
+
+entries:
+  - sampler: udlm
+    checkpoint_path: /mnt/vast01/users/yazid.janati/projects/duo/outputs/openwebtext-train/2026.03.25/192757/checkpoints/last.ckpt
+    model_prediction: mean_loo
+    train_loss: elbo
