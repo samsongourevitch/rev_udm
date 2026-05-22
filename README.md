@@ -1,6 +1,6 @@
 # Revisited Uniform Diffusion Models 
 
-This repository contains the code for the paper *Uniform Diffusion Models Revisited: Leave-One-Out Denoiser and Absorbing State Reformulation*.
+This repository contains the code for the paper *[Uniform Diffusion Models Revisited: Leave-One-Out Denoiser and Absorbing State Reformulation](https://arxiv.org/abs/2605.22765)*. 
 
 The main point of the paper is that the usual plug-in parameterization of Uniform Diffusion Models (UDMs) does not learn the standard denoiser. It learns a leave-one-out (LOO) denoiser instead. We give exact formulas to convert between the standard denoiser, the LOO denoiser, and the score, so the two parameterizations can be used interchangeably at training time or at inference time. In practice, the LOO parameterization gives better results and also leads to useful inference tools such as predictor-corrector sampling.
 
@@ -212,7 +212,15 @@ python eval_scripts/ppl_eval/ppl_eval.py finalize --run-name my_ppl_run
 If you use this code, please cite:
 
 ```bibtex
-
+@misc{gourevitch2026uniformdiffusionmodelsrevisited,
+      title={Uniform Diffusion Models Revisited: Leave-One-Out Denoiser and Absorbing State Reformulation}, 
+      author={Samson Gourevitch and Yazid Janati and Dario Shariatian and Umut Simsekli and Eric Moulines and Eric P. Xing and Alain Durmus},
+      year={2026},
+      eprint={2605.22765},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2605.22765}, 
+}
 ```
 
 ## License
