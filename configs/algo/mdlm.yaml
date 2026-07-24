@@ -5,4 +5,4 @@ time_conditioning: False
 subs_masking: False
 causal_attention: False
 ignore_bos: False
-loss_type: elbo
+loss_fn: elbo

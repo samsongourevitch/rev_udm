@@ -273,6 +273,9 @@ class DiscreteDiffusion(nn.Module):
         self.schedule = schedule_fn
         self.vocab_size = vocab_size
         self.model_prediction = model_prediction
+        # Representation returned by forward(); subclasses override this when
+        # _process_logits converts the raw model output to another parameterization.
+        self.processed_prediction_type = model_prediction
         self.p_nucleus = float(getattr(config.sampling, "p_nucleus", 1.0))
         if not (0.0 <= self.p_nucleus <= 1.0):
             raise ValueError(
@@ -831,7 +834,10 @@ class UDLM(DiscreteDiffusion):
             model_prediction="mean_loo",
         )
         assert model_prediction in ["mean", "mean_loo"]
+        # The network predicts this representation.
         self.model_prediction = model_prediction
+        # UDLM.forward() always returns the LOO representation consumed by its ELBO.
+        self.processed_prediction_type = "mean_loo"
 
     def _process_logits(self, logits, xt, alpha_t, **kwargs):
         return to_loo_denoiser_logits(
@@ -931,7 +937,10 @@ class MaximalCoupling(DiscreteDiffusion):
             model_prediction="mean",
         )
         assert model_prediction in ["mean", "mean_loo"]
+        # The network predicts this representation.
         self.model_prediction = model_prediction
+        # MaximalCoupling.forward() always returns ordinary denoiser logits.
+        self.processed_prediction_type = "mean"
 
     def _process_logits(self, logits, xt, alpha_t, **kwargs):
         return to_denoiser_logits(

@@ -85,8 +85,8 @@ class LitDiffusionBase(L.LightningModule):
     def _current_accumulation_step(self, batch_idx):
         return batch_idx % self.trainer.accumulate_grad_batches
 
-    def _model_prediction_type(self):
-        return self.diffusion.model_prediction
+    def _processed_prediction_type(self):
+        return self.diffusion.processed_prediction_type
 
     def _compute_loss_info(
         self,
@@ -98,7 +98,7 @@ class LitDiffusionBase(L.LightningModule):
         dalpha_t,
         valid_tokens,
     ):
-        loss_fn_name = getattr(self.config.training, "loss_fn", "elbo")
+        loss_fn_name = getattr(self.config.algo, "loss_fn", "elbo")
         if loss_fn_name == "elbo":
             per_token = self.diffusion.elbo_per_token(
                 logits=logits,
@@ -114,7 +114,7 @@ class LitDiffusionBase(L.LightningModule):
                 x0=x0,
                 xt=xt,
                 alpha_t=alpha_t,
-                model_prediction_type=self._model_prediction_type(),
+                model_prediction_type=self._processed_prediction_type(),
             )
             nll_per_token = self.diffusion.elbo_per_token(
                 logits=logits,
@@ -124,7 +124,7 @@ class LitDiffusionBase(L.LightningModule):
                 dalpha_t=dalpha_t,
             )
         else:
-            raise ValueError(f"Unsupported training.loss_fn: {loss_fn_name}")
+            raise ValueError(f"Unsupported algo.loss_fn: {loss_fn_name}")
 
         valid_tokens = valid_tokens.to(per_token.dtype)
         loss_sum = (per_token * valid_tokens).sum()

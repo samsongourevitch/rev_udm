@@ -8,4 +8,4 @@ conditioning_fusion: separate_linear  # separate_linear / shared_mlp
 subs_masking: False
 causal_attention: False
 ignore_bos: False
-loss_type: elbo
+loss_fn: elbo

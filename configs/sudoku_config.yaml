@@ -46,7 +46,6 @@ training:
   ema: 0.0
   antithetic_sampling: true
   sampling_eps: 1e-3
-  loss_fn: elbo
 
 eval:
   checkpoint_path: ''
